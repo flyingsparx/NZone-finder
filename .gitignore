@@ -3,7 +3,9 @@
 *.apk
 *.sw*
 *.jar
+*.bat
 secrets.xml
+local.properties
 .idea/
 .gradle/
 debug/
