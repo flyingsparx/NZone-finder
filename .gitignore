@@ -2,7 +2,10 @@
 *.class
 *.apk
 *.sw*
+*.jar
 secrets.xml
+.idea/
+.gradle/
 debug/
 androidTest/
 release/
