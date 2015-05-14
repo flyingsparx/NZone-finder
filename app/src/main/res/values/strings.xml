@@ -4,4 +4,6 @@
     <string name="app_name">N-Zone Finder</string>
     <string name="title_activity_map">NZone Finder</string>
     <string name="title_activity_about">About</string>
+    <string name="title_activity_venue">NZone venue details</string>
+
 </resources>

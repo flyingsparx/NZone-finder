@@ -11,11 +11,13 @@ public class Spot {
     private Double latitude, longitude;
     private Boolean is_group;
     private int size;
+    private String id;
 
-    public Spot(Double l, Double l2, String n){
+    public Spot(String id, Double l, Double l2, String n){
         this.latitude = l;
         this.longitude = l2;
         this.name = n;
+        this.id = id;
         is_group = false;
     }
 
@@ -44,5 +46,9 @@ public class Spot {
 
     public int get_size(){
         return size;
+    }
+
+    public String get_id(){
+        return id;
     }
 }

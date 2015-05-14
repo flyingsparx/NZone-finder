@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="net.flyingsparx.spotpassandroid.ui.VenueActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading_venue">
+
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/venue_info"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/venue_name"
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/venue_type"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/venue_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Medium Text"
+            android:id="@+id/address"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/venue_type" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/wifi_icon"
+            android:layout_below="@+id/address"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_network_wifi_grey600_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/ssid"
+            android:layout_marginLeft="10dp"
+            android:layout_alignBottom="@+id/wifi_icon"
+            android:layout_toRightOf="@+id/wifi_icon"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/services_icon"
+            android:layout_below="@+id/wifi_icon"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_check_box_grey600_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/services"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@+id/services_icon"
+            android:layout_toRightOf="@+id/services_icon"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/distance_icon"
+            android:layout_below="@+id/services"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_directions_grey600_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/distance"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@+id/distance_icon"
+            android:layout_toRightOf="@+id/distance_icon"/>
+
+        </RelativeLayout>
+
+</RelativeLayout>

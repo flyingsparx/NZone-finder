@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.flyingsparx.spotpassandroid.R;
@@ -39,8 +40,13 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
     private GoogleMap map;
     MapFragment map_fragment;
     GoogleApiClient api_client;
+    Location my_location;
     LatLng current_location;
     float current_zoom;
+
+
+    ArrayList<Spot> spots;
+    ArrayList<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +72,7 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
     public void onConnected(Bundle bundle) {
         Location location = LocationServices.FusedLocationApi.getLastLocation(api_client);
         if (location != null) {
-            System.out.println(location);
+            my_location = location;
             if(map != null){
                 CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
                 map.animateCamera(update);
@@ -114,11 +120,39 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
                     LatLng sw = bounds.southwest;
                     LatLng ne = bounds.northeast;
                     double zoom = cameraPosition.zoom;
-                    SpotPassUtil.DataGetter getter = new SpotPassUtil.DataGetter(m);
+                    SpotPassUtil.SpotGetter getter = new SpotPassUtil.SpotGetter(m);
                     getter.execute(sw.latitude, sw.longitude, ne.latitude, ne.longitude, zoom);
                 }
             };
+            GoogleMap.OnMarkerClickListener listener2 = new GoogleMap.OnMarkerClickListener(){
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    marker.showInfoWindow();
+                    return true;
+                }
+            };
+            GoogleMap.OnInfoWindowClickListener listener3 = new GoogleMap.OnInfoWindowClickListener(){
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+
+                    for(int i = 0; i < markers.size(); i++){
+                        if(markers.get(i).getId().equals(marker.getId())){
+                            Intent intent = new Intent(m, VenueActivity.class);
+                            String message = spots.get(i).get_id();
+                            intent.putExtra("VENUE_ID", message);
+                            if(my_location != null) {
+                                intent.putExtra("MY_LATITUDE", my_location.getLatitude());
+                                intent.putExtra("MY_LONGITUDE", my_location.getLongitude());
+                            }
+                            startActivity(intent);
+                            break;
+                        }
+                    }
+                }
+            };
             map.setOnCameraChangeListener(listener);
+            map.setOnMarkerClickListener(listener2);
+            map.setOnInfoWindowClickListener(listener3);
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(false);
             map.getUiSettings().setZoomControlsEnabled(false);
@@ -126,16 +160,20 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         System.out.println(map);
     }
 
-    public void update_spots(ArrayList<Spot> spots){
+    public void update_spots(ArrayList<Spot> s){
+        spots = s;
+        markers = new ArrayList<Marker>();
         map.clear();
         for(int i = 0; i < spots.size(); i++){
             Spot spot = spots.get(i);
             if(!spot.is_group()) {
-                map.addMarker(new MarkerOptions()
-                        .position(new LatLng(spot.get_latitude(), spot.get_longitude()))
-                        .title(spot.get_name())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_small))
+                Marker m = map.addMarker(new MarkerOptions()
+                                .position(new LatLng(spot.get_latitude(), spot.get_longitude()))
+                                .title(spot.get_name())
+                                .snippet("(tap for more info)")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_small))
                 );
+                markers.add(m);
             }
             else{
                 BitmapDescriptor b = null;
@@ -145,10 +183,11 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
                 if(spot.get_size() == 4){b = BitmapDescriptorFactory.fromResource(R.drawable.icon_4);}
                 if(spot.get_size() == 5){b = BitmapDescriptorFactory.fromResource(R.drawable.icon_5);}
                 if(spot.get_size() > 5){b = BitmapDescriptorFactory.fromResource(R.drawable.icon_6);}
-                map.addMarker(new MarkerOptions()
+                Marker m = map.addMarker(new MarkerOptions()
                                 .position(new LatLng(spot.get_latitude(), spot.get_longitude()))
                                 .icon(b)
                 );
+                markers.add(m);
             }
         }
     }

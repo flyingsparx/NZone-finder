@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import net.flyingsparx.spotpassandroid.model.Spot;
+import net.flyingsparx.spotpassandroid.model.Venue;
 import net.flyingsparx.spotpassandroid.ui.MapActivity;
+import net.flyingsparx.spotpassandroid.ui.VenueActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,13 +63,13 @@ public class SpotPassUtil {
     }
 
 
-    public static  class DataGetter extends AsyncTask<Double, Integer, ArrayList<Spot>> {
+    public static  class SpotGetter extends AsyncTask<Double, Integer, ArrayList<Spot>> {
 
         MapActivity caller;
         ArrayList<Spot> spots;
         final private static String BASE_URL = "https://microsite.nintendo-europe.com/hotspots/api/hotspots/get?summary_mode=true";
 
-        public DataGetter(MapActivity caller){
+        public SpotGetter(MapActivity caller){
             this.caller = caller;
         }
 
@@ -108,11 +110,11 @@ public class SpotPassUtil {
                             s = new Spot(entry.getDouble("lat"), entry.getDouble("lon"), entry.getInt("group_size"));
                         }
                         else{
-                            s = new Spot(entry.getDouble("lat"), entry.getDouble("lon"), entry.getString("na").replaceAll("&amp;", "&"));
+                            s = new Spot(entry.getString("id"), entry.getDouble("lat"), entry.getDouble("lon"), entry.getString("na").replaceAll("&amp;", "&"));
                         }
                     }
                     else{
-                        s = new Spot(entry.getDouble("lat"), entry.getDouble("lon"), entry.getString("na"));
+                        s = new Spot(entry.getString("id"), entry.getDouble("lat"), entry.getDouble("lon"), entry.getString("na"));
                     }
 
                     spots.add(s);
@@ -132,6 +134,59 @@ public class SpotPassUtil {
         @Override
         protected void onPostExecute(ArrayList<Spot> result){
             caller.update_spots(spots);
+        }
+    }
+
+
+    public static  class VenueGetter extends AsyncTask<String, Integer, Venue> {
+
+        VenueActivity caller;
+        final private static String BASE_URL = "https://microsite.nintendo-europe.com/hotspots/api/hotspots/getbyid";
+
+        public VenueGetter(VenueActivity caller){
+            this.caller = caller;
+        }
+
+        @Override
+        protected Venue doInBackground(String... arg0) {
+            String id = arg0[0];
+
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            BufferedReader reader = null;
+            StringBuffer completeData = new StringBuffer();
+            String data = null;
+            try {
+                URL url = new URL(BASE_URL+"?id="+id);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                InputStream in = con.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(in));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    completeData.append(line);
+                }
+                reader.close();
+
+                data = completeData.toString();
+                JSONObject o = new JSONObject(data);
+
+                Venue v = new Venue(o.getString("id"), o.getString("address_name"), o.getString("street"), o.getString("street2"), o.getString("postcode"), o.getString("city"), o.getString("country_name"), o.getString("address_type"), o.getString("ssid"), o.getString("services_names"), o.getString("latitude"), o.getString("longitude"));
+                return v;
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Venue v){
+            caller.update_venue(v);
         }
     }
 }
