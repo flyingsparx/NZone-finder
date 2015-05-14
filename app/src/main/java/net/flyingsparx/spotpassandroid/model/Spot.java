@@ -1,4 +1,4 @@
-package net.flyingsparx.spotpassandroid;
+package net.flyingsparx.spotpassandroid.model;
 
 import android.location.Location;
 

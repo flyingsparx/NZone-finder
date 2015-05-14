@@ -1,15 +1,12 @@
-package net.flyingsparx.spotpassandroid;
+package net.flyingsparx.spotpassandroid.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Location;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,13 +15,11 @@ import android.widget.EditText;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -32,7 +27,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import net.flyingsparx.spotpassandroid.R;
+import net.flyingsparx.spotpassandroid.util.SpotPassUtil;
+import net.flyingsparx.spotpassandroid.model.Spot;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
@@ -48,7 +48,11 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         setContentView(R.layout.activity_map);
 
         init_map();
+        get_current_location();
 
+    }
+
+    private void get_current_location(){
         api_client = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -56,6 +60,22 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
                 .build();
         api_client.connect();
     }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {}
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(api_client);
+        if (location != null) {
+            System.out.println(location);
+            if(map != null){
+                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
+                map.animateCamera(update);
+            }
+        }
+        api_client.disconnect();
+    }
+    @Override
+    public void onConnectionSuspended(int i) {}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,6 +120,8 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
             };
             map.setOnCameraChangeListener(listener);
             map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(false);
+            map.getUiSettings().setZoomControlsEnabled(false);
         }
         System.out.println(map);
     }
@@ -112,7 +134,7 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(spot.get_latitude(), spot.get_longitude()))
                         .title(spot.get_name())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_small))
                 );
             }
             else{
@@ -131,29 +153,50 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         }
     }
 
-    public void move_to_place(Address a){
-        if(a == null){
+    public void show_place_result(List<Address> a){
+        final List<Address> addresses = a;
+        if(addresses == null){
             new AlertDialog.Builder(this)
                     .setTitle("Lookup failed")
                     .setMessage("We could not find a location matching your request.")
                     .setNeutralButton("Try again", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            showAddressDialog(null);
+                            show_address_dialog(null);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {}
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.ic_error_outline_grey600_48dp)
                     .show();
         }
-        else {
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(a.getLatitude(), a.getLongitude()), 15);
-            map.moveCamera(update);
+        else if(addresses.size() == 1){
+            move_to_place(addresses.get(0));
+        }
+        else if(addresses.size() > 1){
+            ArrayList<String> names = new ArrayList<String>();
+            for(int i = 0; i < addresses.size(); i++){
+                names.add(addresses.get(i).getAddressLine(0)+", "+addresses.get(i).getAddressLine(1));
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Did you mean...")
+                    .setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            move_to_place(addresses.get(which));
+                        }
+                    });
+            builder.create();
+            builder.show();
         }
     }
 
-    public void showAddressDialog(MenuItem item){
+    public void move_to_place(Address a){
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(a.getLatitude(), a.getLongitude()), 15);
+            map.animateCamera(update);
+    }
+
+    public void show_address_dialog(MenuItem item){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final MapActivity m = this;
         LayoutInflater inflater = getLayoutInflater();
@@ -174,26 +217,12 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         builder.show();
     }
 
-    public void showAboutActivity(MenuItem item){
+    public void show_about_activity(MenuItem item){
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
-    @Override
-    public void onConnected(Bundle bundle) {
-        Location location = LocationServices.FusedLocationApi.getLastLocation(api_client);
-        if (location != null) {
-            System.out.println(location);
-            if(map != null){
-                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
-                map.moveCamera(update);
-            }
-        }
-        api_client.disconnect();
+    public void go_to_me(MenuItem item){
+        get_current_location();
     }
-    @Override
-    public void onConnectionSuspended(int i) {}
 }

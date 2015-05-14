@@ -1,4 +1,4 @@
-package net.flyingsparx.spotpassandroid;
+package net.flyingsparx.spotpassandroid.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import net.flyingsparx.spotpassandroid.R;
 
 
 public class AboutActivity extends ActionBarActivity {
@@ -18,7 +20,7 @@ public class AboutActivity extends ActionBarActivity {
     }
 
     public void goToSource(View view){
-        String url = "https://github.com/flyingsparx/hotspot-android";
+        String url = "https://github.com/flyingsparx/NZone-finder";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

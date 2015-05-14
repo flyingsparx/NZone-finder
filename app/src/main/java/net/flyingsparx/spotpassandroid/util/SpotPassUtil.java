@@ -1,9 +1,12 @@
-package net.flyingsparx.spotpassandroid;
+package net.flyingsparx.spotpassandroid.util;
 
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+
+import net.flyingsparx.spotpassandroid.model.Spot;
+import net.flyingsparx.spotpassandroid.ui.MapActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +18,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,10 +52,10 @@ public class SpotPassUtil {
         @Override
         protected void onPostExecute(List<Address> places){
             if(places != null && places.size() > 0){
-                caller.move_to_place(places.get(0));
+                caller.show_place_result(places);
             }
             else {
-                caller.move_to_place(null);
+                caller.show_place_result(null);
             }
         }
     }

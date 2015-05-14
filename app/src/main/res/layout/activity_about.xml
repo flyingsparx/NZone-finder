@@ -17,7 +17,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
-            android:text="Nintendo HotSpot Finder"
+            android:text="Nintendo Zone Hotspot Finder"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_weight="1.0"/>
 
@@ -51,7 +51,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/versionText"
             android:layout_marginTop="10dp"
-            android:text="Discover nearby Nintendo HotSpots to connect to using your 2DS or 3DS. The author and app are in no way affiliated with Nintendo and their partners, and the software uses data retrieved from Nintendo's own website."
+            android:text="Easily discover nearby Nintendo Zone Hotspots to connect to using your 2DS or 3DS. This app is not affiliated with Nintendo or their partners."
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
 

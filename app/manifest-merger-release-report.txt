@@ -63,7 +63,7 @@ ADDED from AndroidManifest.xml:20:9
 		ADDED from AndroidManifest.xml:21:13
 	android:value
 		ADDED from AndroidManifest.xml:22:13
-activity#net.flyingsparx.spotpassandroid.MapActivity
+activity#net.flyingsparx.spotpassandroid.ui.MapActivity
 ADDED from AndroidManifest.xml:24:9
 	android:label
 		ADDED from AndroidManifest.xml:27:13
@@ -81,7 +81,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:30:17
 	android:name
 		ADDED from AndroidManifest.xml:30:27
-activity#net.flyingsparx.spotpassandroid.AboutActivity
+activity#net.flyingsparx.spotpassandroid.ui.AboutActivity
 ADDED from AndroidManifest.xml:33:9
 	android:label
 		ADDED from AndroidManifest.xml:35:13

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:yourapp="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/lookup"
         android:title="Lookup location..."
-        android:onClick="showAddressDialog"/>
+        android:icon="@drawable/ic_search_white_48dp"
+        yourapp:showAsAction="always"
+        android:onClick="show_address_dialog"/>
+    <item android:id="@+id/my_location"
+        android:title="Lookup location..."
+        android:icon="@drawable/ic_my_location_white_48dp"
+        yourapp:showAsAction="ifRoom"
+        android:onClick="go_to_me"/>
     <item android:id="@+id/about"
         android:title="About"
-        android:onClick="showAboutActivity"/>
+        android:onClick="show_about_activity"/>
 </menu>
