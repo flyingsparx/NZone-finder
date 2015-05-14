@@ -1,0 +1,178 @@
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/aboutText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:text="Nintendo HotSpot Finder"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_weight="1.0"/>
+
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/aboutText"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Version: "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:id="@+id/versionText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/aboutText"
+            android:layout_toRightOf="@+id/versionText"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="2dp"
+            android:text="0.1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/versionText"
+            android:layout_marginTop="10dp"
+            android:text="Discover nearby Nintendo HotSpots to connect to using your 2DS or 3DS. The author and app are in no way affiliated with Nintendo and their partners, and the software uses data retrieved from Nintendo's own website."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <View
+            android:id="@+id/licenseDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#bbb"
+            android:layout_below="@+id/info"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/licenseOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/licenseDivider"
+            android:layout_marginTop="10dp"
+            android:text="License: GNU General Public License (v3)"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+
+
+        <TextView
+            android:id="@+id/licenseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/licenseOverview"
+            android:layout_marginTop="10dp"
+            android:text="Copyright 2015 Will Webberley (flyingSparx).
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details."
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+
+        <Button
+            android:id="@+id/sourceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/licenseText"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:onClick="goToSource"
+            android:text="Project source"
+            android:layout_weight=".50"/>
+
+        <Button
+            android:id="@+id/licenseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/licenseText"
+            android:layout_toRightOf="@+id/sourceButton"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:onClick="goToLicense"
+            android:text="View license"
+            android:layout_weight=".50"/>
+
+        <View
+            android:id="@+id/developerDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#bbb"
+            android:layout_below="@+id/sourceButton"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/developerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/developerDivider"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:text="Developer"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_weight="1.0"/>
+
+        <TextView
+            android:id="@+id/authorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/developerText"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Will Webberley (\@flyingSparx)"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="1.0"/>
+=
+        <Button
+            android:id="@+id/helpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/authorText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:onClick="goToHelp"
+            android:text="Contact"
+            android:layout_weight=".50"/>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitStart"
+            android:layout_below="@+id/authorText"
+            android:layout_toRightOf="@+id/helpButton"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/twitter"
+            android:onClick="openTwitter"/>
+    </RelativeLayout>
+</ScrollView>

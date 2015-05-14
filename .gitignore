@@ -1,0 +1,11 @@
+*.bin
+*.class
+*.apk
+*.sw*
+secrets.xml
+debug/
+androidTest/
+release/
+build/
+libs/
+

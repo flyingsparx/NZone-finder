@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">N-Zone Finder</string>
+    <string name="title_activity_map">NZone Finder</string>
+    <string name="title_activity_about">About</string>
+</resources>
