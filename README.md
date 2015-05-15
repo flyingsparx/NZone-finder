@@ -8,7 +8,7 @@ Download the compiled app from [Google Play](https://play.google.com/store/apps/
 
 ## Data
 
-Data is retreieved from Nintendo's Hotspot API. See this [blog post](https://flyingsparx.net/blog/2015/5/12/nintendos-hotspot-api/) for more details.
+Data is retrieved from Nintendo's Hotspot API. See this [blog post](https://flyingsparx.net/blog/2015/5/12/nintendos-hotspot-api/) for more details.
 
 ## Dependencies
 
