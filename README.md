@@ -14,3 +14,7 @@ Data is retrieved from Nintendo's Hotspot API. See this [blog post](https://flyi
 
 * Google's `play-services` library is required for showing the Google Map
 * Android's `appcompat` library is required for supporting older Android versions
+
+## Licensing
+
+Code in this repository is licensed under the GNU General Public License (>=v3).
